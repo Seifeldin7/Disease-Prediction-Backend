@@ -16,7 +16,6 @@ class Classifier:
             filename = os.path.join(dirname, 'Diabetes/diabetes_model.pkl')
         elif self.disease.find('BreastCancer') != -1:
             filename = os.path.join(dirname, 'BreastCancer/cancer_model.pkl')
-        
         self.model = joblib.load(filename)
 
     def predict(self):

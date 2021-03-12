@@ -8,6 +8,8 @@ from rest_framework import status
 from django.http import Http404
 from ML.classifier import Classifier
 import json
+import ast
+
 # Create your views here.
 # A Class View That Return All The Diseases
 
@@ -36,10 +38,10 @@ class FieldView (APIView):
 class PredictView (APIView):
     def post(self,request):
         try:
-            disease= self.request.query_params.get('disease')
-            body_unicode = request.body.decode('utf-8')
-            body = json.loads(body_unicode)
-            predict_list = list(body.values()) 
+            diseaseId= self.request.query_params.get('diseaseId')
+            disease = Disease.objects.get(id=diseaseId).name
+            predict_list = request.body.decode('utf-8')
+            predict_list = ast.literal_eval(predict_list)
             classifier = Classifier(predict_list, disease)
             prediction = classifier.predict()
             return Response(prediction[0])
